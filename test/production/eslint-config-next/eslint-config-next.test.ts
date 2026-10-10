@@ -7,10 +7,13 @@ const files = new FileRef(join(__dirname, 'fixture'))
 const javascriptDiagnostics = [
   'app/page.jsx:2 @next/next/no-img-element',
   'app/page.jsx:2 jsx-a11y/alt-text',
-  'components/widget.jsx:10 import/no-anonymous-default-export',
-  'components/widget.jsx:10 react/display-name',
+  'components/widget.jsx:10 @eslint-react/no-missing-component-display-name',
+  'components/widget.jsx:12 import/no-anonymous-default-export',
   'components/widget.jsx:5 react-hooks/rules-of-hooks',
-  'components/widget.jsx:7 react/jsx-no-undef',
+  'components/widget.jsx:7 @eslint-react/no-missing-key',
+  // Only `Unused`. The parser doesn't add references for JSX, so
+  // `eslint-config-next/jsx-uses-react` and `jsx-uses-vars` mark the others.
+  'lib/components.jsx:3 no-unused-vars',
   'lib/globals.js:2 no-unused-vars',
   'lib/globals.js:3 no-global-assign',
   'lib/globals.js:3 no-implicit-globals',
@@ -69,6 +72,9 @@ function lint(testDir: string, directory: string) {
     .sort()
 }
 
+// eslint-config-next loads @eslint-react/eslint-plugin, an ES module, with
+// `require(esm)`.
+// @force-gate node22
 describe.each(['9.37.0', '10.11.0'])(
   'eslint-config-next with ESLint %s',
   (eslint) => {
@@ -78,7 +84,7 @@ describe.each(['9.37.0', '10.11.0'])(
       dependencies: {
         eslint,
         'eslint-config-next': 'workspace:*',
-        'eslint-plugin-react': '7.37.5',
+        '@eslint-react/eslint-plugin': '5.24.9',
       },
     })
 
@@ -94,6 +100,7 @@ describe.each(['9.37.0', '10.11.0'])(
 
 // npm doesn't hoist the plugins whose ESLint peer range excludes ESLint 10,
 // so they and the import resolvers are nested under eslint-config-next.
+// @force-gate node22
 describe('eslint-config-next with ESLint 10 installed by npm', () => {
   const { next } = nextTestSetup({
     files,

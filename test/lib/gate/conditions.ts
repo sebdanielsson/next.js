@@ -157,6 +157,13 @@ export const conditions: Record<string, Condition> = {
     'running on Windows',
     () => process.platform === 'win32'
   ),
+  node22: staticCondition(
+    'running on Node.js 22.12.0 or later, the minimum eslint-config-next supports',
+    () => {
+      const [major, minor] = process.versions.node.split('.').map(Number)
+      return major > 22 || (major === 22 && minor >= 12)
+    }
+  ),
   ci: staticCondition('running in CI (`NEXT_TEST_CI`)', () =>
     Boolean(process.env.NEXT_TEST_CI)
   ),

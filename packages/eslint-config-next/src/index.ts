@@ -2,7 +2,6 @@ import type { ESLint, Linter } from 'eslint'
 
 // plugins
 import next from '@next/eslint-plugin-next'
-import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import tsEslint from 'typescript-eslint'
 // import * as ... for plugins without default export
@@ -12,6 +11,8 @@ import * as jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
 // utils
 import globals from 'globals'
 import eslintParser from './parser'
+import { eslintReact } from './eslint-react'
+import { plugin } from './plugin'
 import { fixupPluginRules } from './rule-context'
 
 const config: Linter.Config[] = [
@@ -20,12 +21,13 @@ const config: Linter.Config[] = [
     // Default files, users can overwrite this.
     files: ['**/*.{js,jsx,mjs,ts,tsx,mts,cts}'],
     plugins: {
-      react: fixupPluginRules(react),
+      '@eslint-react': eslintReact,
       // The plugin's nested `configs.flat` doesn't match `ESLint.Plugin`.
       'react-hooks': reactHooks as ESLint.Plugin,
       import: fixupPluginRules(importPlugin),
       'jsx-a11y': jsxA11yPlugin,
       '@next/next': next,
+      'eslint-config-next': plugin,
     },
     languageOptions: {
       parser: eslintParser,
@@ -48,9 +50,6 @@ const config: Linter.Config[] = [
       },
     },
     settings: {
-      react: {
-        version: 'detect',
-      },
       'import/parsers': {
         '@typescript-eslint/parser': ['.ts', '.mts', '.cts', '.tsx', '.d.ts'],
       },
@@ -67,13 +66,39 @@ const config: Linter.Config[] = [
       },
     },
     rules: {
-      ...react.configs.recommended.rules,
+      // The @eslint-react/eslint-plugin equivalents of the eslint-plugin-react
+      // rules this config used to enable. eslint-plugin-react's
+      // `jsx-no-duplicate-props`, `jsx-no-undef`, `no-is-mounted`,
+      // `no-string-refs`, `no-unescaped-entities` and `require-render-return`
+      // have none.
+      // react/display-name
+      '@eslint-react/no-missing-component-display-name': 'error',
+      // react/jsx-key
+      '@eslint-react/no-missing-key': 'error',
+      // react/jsx-no-comment-textnodes
+      '@eslint-react/jsx-no-comment-textnodes': 'error',
+      // react/no-children-prop
+      '@eslint-react/jsx-no-children-prop': 'error',
+      // react/no-danger-with-children
+      '@eslint-react/dom-no-dangerously-set-innerhtml-with-children': 'error',
+      // react/no-deprecated
+      '@eslint-react/no-component-will-mount': 'error',
+      '@eslint-react/no-component-will-receive-props': 'error',
+      '@eslint-react/no-component-will-update': 'error',
+      '@eslint-react/dom-no-hydrate': 'error',
+      '@eslint-react/dom-no-render': 'error',
+      // react/no-direct-mutation-state
+      '@eslint-react/no-direct-mutation-state': 'error',
+      // react/no-find-dom-node
+      '@eslint-react/dom-no-find-dom-node': 'error',
+      // react/no-render-return-value
+      '@eslint-react/dom-no-render-return-value': 'error',
+      // react/jsx-uses-react and react/jsx-uses-vars
+      'eslint-config-next/jsx-uses-react': 'error',
+      'eslint-config-next/jsx-uses-vars': 'error',
       ...reactHooks.configs.recommended.rules,
       ...next.configs.recommended.rules,
       'import/no-anonymous-default-export': 'warn',
-      'react/no-unknown-property': 'off',
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
       'jsx-a11y/alt-text': [
         'warn',
         {
@@ -86,7 +111,6 @@ const config: Linter.Config[] = [
       'jsx-a11y/aria-unsupported-elements': 'warn',
       'jsx-a11y/role-has-required-aria-props': 'warn',
       'jsx-a11y/role-supports-aria-props': 'warn',
-      'react/jsx-no-target-blank': 'off',
     },
   },
   {

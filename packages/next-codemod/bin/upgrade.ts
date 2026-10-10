@@ -418,7 +418,7 @@ export async function runUpgrade(
       const eslintRange = eslintConfigNextPeerDeps?.eslint
       if (eslintRange) {
         // TODO: Target ESLint 10 once eslint-config-next's plugins, especially
-        // eslint-plugin-react, support its API removals (e.g. context.getFilename).
+        // eslint-plugin-import, support its API removals (e.g. context.getFilename).
         const cappedRange = eslintRange
           .split('||')
           .map((range) => `${range.trim()} <10`)

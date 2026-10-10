@@ -93,7 +93,7 @@ Every name in a pragma must be declared in `test/lib/gate/conditions.ts`
 
 - **static** — the run's shape: `dev`, `start`, `deploy`, `mode`, `turbopack`,
   `rspack`, `webpack`, `bundler`, `react18`, `wasm`, `linux`, `macos`,
-  `windows`, `ci`; the deploy host `vercel`; specialized CI variants
+  `windows`, `node22`, `ci`; the deploy host `vercel`; specialized CI variants
   `adapter`, `nodeMiddleware`, `standaloneOutput`, `turbopackDev`, and
   `turbopackBuild`; plus the always-false `FIXME`/`TODO`.
   `prod` and `prefetching` are semantic aliases for `!dev` — prefer the name

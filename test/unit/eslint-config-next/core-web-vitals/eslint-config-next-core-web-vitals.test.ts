@@ -2,6 +2,9 @@ import { join } from 'path'
 import { execSync } from 'child_process'
 import { getEslintConfigSnapshot } from '../utils'
 
+// eslint-config-next loads @eslint-react/eslint-plugin, an ES module, with
+// `require(esm)`.
+// @force-gate node22
 describe('eslint-config-next/core-web-vitals', () => {
   it('should match expected resolved configuration', () => {
     const eslintConfigAfterSetupJSON = execSync(
@@ -26,9 +29,6 @@ describe('eslint-config-next/core-web-vitals', () => {
       settings: {
         'import/parsers': expect.any(Object),
         'import/resolver': expect.any(Object),
-        react: {
-          version: 'detect',
-        },
       },
     })
 
@@ -41,13 +41,53 @@ describe('eslint-config-next/core-web-vitals', () => {
        },
        "plugins": [
          "@",
-         "react",
+         "@eslint-react:@eslint-react/eslint-plugin@5.24.9",
          "react-hooks:eslint-plugin-react-hooks@7.0.0",
          "import",
          "jsx-a11y:eslint-plugin-jsx-a11y@6.10.2",
          "@next/next:@next/eslint-plugin-next",
+         "eslint-config-next:eslint-config-next",
        ],
        "rules": {
+         "@eslint-react/dom-no-dangerously-set-innerhtml-with-children": [
+           2,
+         ],
+         "@eslint-react/dom-no-find-dom-node": [
+           2,
+         ],
+         "@eslint-react/dom-no-hydrate": [
+           2,
+         ],
+         "@eslint-react/dom-no-render": [
+           2,
+         ],
+         "@eslint-react/dom-no-render-return-value": [
+           2,
+         ],
+         "@eslint-react/jsx-no-children-prop": [
+           2,
+         ],
+         "@eslint-react/jsx-no-comment-textnodes": [
+           2,
+         ],
+         "@eslint-react/no-component-will-mount": [
+           2,
+         ],
+         "@eslint-react/no-component-will-receive-props": [
+           2,
+         ],
+         "@eslint-react/no-component-will-update": [
+           2,
+         ],
+         "@eslint-react/no-direct-mutation-state": [
+           2,
+         ],
+         "@eslint-react/no-missing-component-display-name": [
+           2,
+         ],
+         "@eslint-react/no-missing-key": [
+           2,
+         ],
          "@next/next/google-font-display": [
            1,
          ],
@@ -113,6 +153,12 @@ describe('eslint-config-next/core-web-vitals', () => {
          ],
          "@next/next/no-unwanted-polyfillio": [
            1,
+         ],
+         "eslint-config-next/jsx-uses-react": [
+           2,
+         ],
+         "eslint-config-next/jsx-uses-vars": [
+           2,
          ],
          "import/no-anonymous-default-export": [
            1,
@@ -189,57 +235,6 @@ describe('eslint-config-next/core-web-vitals', () => {
            1,
          ],
          "react-hooks/use-memo": [
-           2,
-         ],
-         "react/display-name": [
-           2,
-         ],
-         "react/jsx-key": [
-           2,
-         ],
-         "react/jsx-no-comment-textnodes": [
-           2,
-         ],
-         "react/jsx-no-duplicate-props": [
-           2,
-         ],
-         "react/jsx-no-undef": [
-           2,
-         ],
-         "react/jsx-uses-react": [
-           2,
-         ],
-         "react/jsx-uses-vars": [
-           2,
-         ],
-         "react/no-children-prop": [
-           2,
-         ],
-         "react/no-danger-with-children": [
-           2,
-         ],
-         "react/no-deprecated": [
-           2,
-         ],
-         "react/no-direct-mutation-state": [
-           2,
-         ],
-         "react/no-find-dom-node": [
-           2,
-         ],
-         "react/no-is-mounted": [
-           2,
-         ],
-         "react/no-render-return-value": [
-           2,
-         ],
-         "react/no-string-refs": [
-           2,
-         ],
-         "react/no-unescaped-entities": [
-           2,
-         ],
-         "react/require-render-return": [
            2,
          ],
        },

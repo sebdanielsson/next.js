@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 
-export function Widget({ open }) {
+export function Widget({ open, items }) {
   if (open) {
     useState(0)
   }
-  return <Missing />
+  return items.map((item) => <li>{item}</li>)
 }
+
+export const Memoized = memo(() => <Widget />)
 
 export default () => <Widget />
